@@ -39,35 +39,49 @@ const SinglePlaylist = ({ playlists }) => {
           }}
           key={playlist.playlistId}
         >
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="180"
-              image={playlist.thumbnail.url}
-              alt={playlist.playlistTitle}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {playlist.playlistTitle}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
+          <Link
+            to={`/playlist/${playlist.playlistId}`}
+            component={RouterLink}
+            sx={{ textDecoration: "none" }}
+          >
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="180"
+                image={playlist.thumbnail.url}
+                alt={playlist.playlistTitle}
+              />
+              <CardContent>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  color={colors.grey[100]}
+                >
+                  {playlist.playlistTitle}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Link>
           <CardActions>
             <Link
               to={`/playlist/${playlist.playlistId}`}
               component={RouterLink}
+              sx={{
+                textDecoration: "none",
+              }}
             >
               <Button
                 size="small"
                 sx={{
-                  color: colors.blueAccent[500],
-                  backgroundColor: colors.primary[400],
+                  color: "#fff",
+                  backgroundColor: colors.blueAccent[500],
                   padding: "5px 20px",
                   display: "flex",
                   gap: 0.5,
                   alignItems: "center",
                   "&:hover": {
-                    backgroundColor: colors.primary[500],
+                    backgroundColor: colors.blueAccent[600],
                   },
                 }}
               >
