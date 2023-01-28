@@ -1,5 +1,7 @@
 /** @format */
 
+import { useState } from "react";
+import { useStoreActions } from "easy-peasy";
 import { Box, Typography, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -8,17 +10,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import useYoutube from "../../hooks/useYoutube";
-import { tokens } from "../../theme";
-import { useState } from "react";
 
-const PlaylistForm = ({ open, handleClose, addNewPlaylist }) => {
+import { tokens } from "../../theme";
+
+const PlaylistForm = ({ open, handleClose }) => {
   const [state, setState] = useState("");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const { getData } = useStoreActions((actions) => actions.playlists);
   const handleSubmit = () => {
-    addNewPlaylist(state);
+    getData(state);
     handleClose();
   };
   return (

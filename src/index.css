@@ -9,3 +9,22 @@ body,
   width: 100%;
   font-family: "Montserrat", sans-serif;
 }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #2d3b57;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a0a7b5;
+  border-radius: 50px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #192336;
+}

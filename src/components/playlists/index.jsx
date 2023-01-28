@@ -1,25 +1,29 @@
 /** @format */
+import { useStoreState } from "easy-peasy";
+import { Link as RouterLink } from "react-router-dom";
 
+import { useTheme } from "@mui/material";
 import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardActions from "@mui/material/CardActions";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { PlayCircleOutline } from "@mui/icons-material";
-import {
-  useTheme,
-  Button,
-  CardActionArea,
-  CardActions,
-  IconButton,
-  Typography,
-  Link,
-} from "@mui/material";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+
 import { tokens } from "../../theme";
-import { Link as RouterLink } from "react-router-dom";
-const SinglePlaylist = ({ playlists }) => {
-  let playlistsArr = Object.keys(playlists);
+
+const SinglePlaylist = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const { data, isLoading } = useStoreState((state) => state.playlists);
+  let playlistsArr = Object.keys(data);
   playlistsArr = playlistsArr.map((id) => {
     const { playlistId, playlistTitle, playlistDescription, thumbnail } =
-      playlists[id];
+      data[id];
     return {
       playlistId,
       playlistTitle,
@@ -28,8 +32,6 @@ const SinglePlaylist = ({ playlists }) => {
     };
   });
 
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   return playlistsArr.length > 0
     ? playlistsArr.map((playlist) => (
         <Card
@@ -85,7 +87,7 @@ const SinglePlaylist = ({ playlists }) => {
                   },
                 }}
               >
-                <PlayCircleOutline />
+                <PlayCircleOutlineIcon />
 
                 <Typography>Play</Typography>
               </Button>

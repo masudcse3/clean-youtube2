@@ -15,7 +15,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import { ColorModeContext, tokens } from "../../theme";
 import PlaylistForm from "../../components/playlistForm";
 
-const Appbar = ({ addNewPlaylist }) => {
+const Appbar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -56,8 +56,10 @@ const Appbar = ({ addNewPlaylist }) => {
             </Typography>
           </Link>
         </Box>
+        {/*  */}
         <Box display="flex" gap="20px">
-          <Button
+          {/* Add a new playlist button with popup modal */}
+          {/* <Button
             variant="filled"
             onClick={handleOpen}
             sx={{
@@ -70,7 +72,7 @@ const Appbar = ({ addNewPlaylist }) => {
             }}
           >
             Add New
-          </Button>
+          </Button> */}
           <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlinedIcon />
@@ -81,11 +83,7 @@ const Appbar = ({ addNewPlaylist }) => {
         </Box>
         {/* popup modal form */}
       </Box>
-      <PlaylistForm
-        open={open}
-        handleClose={handleClose}
-        addNewPlaylist={addNewPlaylist}
-      />
+      {/* <PlaylistForm open={open} handleClose={handleClose} /> */}
     </Box>
   );
 };

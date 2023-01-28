@@ -15,19 +15,19 @@ const NotFound = () => {
 };
 function App() {
   const [theme, colorMode] = useMode();
-  const { addToPlaylistsById, playlists } = useYoutube();
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Appbar addNewPlaylist={addToPlaylistsById} />
-        <EasyTodo />
+        <Appbar />
+
         <Box p="20px">
           <Routes>
-            <Route path="/" element={<Home playlists={playlists} />} />
+            <Route path="/" element={<Home />} />
             <Route
               path="/playlist/:playlistId"
-              element={<SinglePlaylistItem playlists={playlists} />}
+              element={<SinglePlaylistItem />}
             />
             <Route path="/*" element={<NotFound />} />
           </Routes>

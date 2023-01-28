@@ -3,37 +3,36 @@
 import { action, thunk } from "easy-peasy";
 import getPlaylist from "../api";
 const playlistModel = {
-  id: "",
-  title: "",
-  description: "",
-  thumbnail: "",
-  channelTitle: "",
-  channelId: "",
-  items: [],
-  setPlaylistData: action((state, payload) => {
-    state = { ...payload };
-    return state;
+  data: {},
+  isLoading: false,
+  isError: "",
+  setData: action((state, payload) => {
+    state.data[payload.playlistId] = payload;
   }),
-  getPlaylistData: thunk(async ({ setPlaylistData }, payload) => {
-    const {
-      channelId,
-      playlistTitle,
-      playlistId,
-      playlistDescription,
-      thumbnail,
-      channelTitle,
-      items,
-    } = await getPlaylist(payload);
-    setPlaylistData({
-      id: playlistId,
-      title: playlistTitle,
-      description: playlistDescription,
-      thumbnail,
-      channelId,
-      channelTitle,
-      items,
-    });
+  setError: action((state, payload) => {
+    state.isError = payload;
   }),
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
+  getData: thunk(
+    async ({ setData, setError, setLoading }, playlistId, { getState }) => {
+      if (getState().data[playlistId]) {
+        alert("playlist already there");
+        return;
+      }
+      setLoading(true);
+      try {
+        const playlists = await getPlaylist(playlistId);
+        setData(playlists);
+        setError("");
+      } catch (e) {
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+  ),
 };
 
 export default playlistModel;
