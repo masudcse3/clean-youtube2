@@ -4,14 +4,15 @@ import {
   Box,
   useTheme,
   Grid,
-  List,
+  Button,
   Typography,
   Tabs,
   Tab,
+  TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import YouTube from "react-youtube";
 import AllItems from "../../components/playlistItems";
 import { tokens } from "../../theme";
@@ -26,32 +27,44 @@ const SinglePlaylistItem = () => {
   const colors = tokens(theme.palette.mode);
   const [videoIndex, setVideoIndex] = useState(0);
   const [value, setValue] = useState(0);
+  const [note, setNote] = useState("");
   const { data } = useStoreState((state) => state.playlists);
+  const { data: noteData } = useStoreState((state) => state.notes);
+  const { newNotes, allNotes } = useStoreActions((action) => action.notes);
   const { playlistId } = useParams();
 
   const { playlistTitle, channelTitle, items } = data[playlistId];
 
-  const handleClick = (index) => {
-    setVideoIndex(index);
-  };
   const allProps = (index) => {
     return {
       id: `simple-panel-id-${index}`,
       "aria-controls": `simple-tabpanel-${index}`,
     };
   };
-  const handleChnage = (event, newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const noteHandleChange = (e) => {
+    newNotes({
+      id: videoId,
+      notes: [e.target.value],
+    });
+  };
+
+  const handleBlur = (value) => {
+    newNotes({
+      id: videoId,
+      notes: value,
+    });
+  };
+
+  const videoId = items[videoIndex].contentDetails.videoId;
+
   return (
     <Box sx={{ flexGrow: 1 }} p="10px 10%">
       <Grid container spacing={2}>
         <Grid item md={8} sm={12}>
-          <YouTube
-            videoId={items[videoIndex].contentDetails.videoId}
-            id={items[videoIndex].contentDetails.videoId}
-            opts={playerOppts}
-          />
+          <YouTube videoId={videoId} id={videoId} opts={playerOppts} />
         </Grid>
         <Grid
           item
@@ -76,8 +89,8 @@ const SinglePlaylistItem = () => {
 
           {items.map((item, index) => (
             <AllItems
-              key={item.contentDetails.videoId}
-              title={item.title}
+              key={item?.contentDetails?.videoId}
+              title={item?.title}
               thumbnail={item?.thumbnail?.url}
               onClick={() => setVideoIndex(index)}
             />
@@ -99,7 +112,7 @@ const SinglePlaylistItem = () => {
           </Typography>
           <Tabs
             value={value}
-            onChange={handleChnage}
+            onChange={handleChange}
             aria-label="basic tabs example"
             indicatorColor="secondary"
             textColor="secondary"
@@ -111,7 +124,35 @@ const SinglePlaylistItem = () => {
             <Typography>{items[videoIndex].description}</Typography>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <h2>Notes</h2>
+            <Typography>Take Important Notes</Typography>
+            <Box display="flex" gap="5px" p="10px 0">
+              <TextField
+                fullWidth
+                name="note"
+                label="Note"
+                onChange={noteHandleChange}
+                onBlur={() =>
+                  handleBlur(noteData[videoId] ? noteData[videoId] : "")
+                }
+                type="text"
+                multiline
+                rows={10}
+                color="secondary"
+                value={noteData[videoId] ? noteData[videoId] : ""}
+              />
+              {/* <Button
+                type="submit"
+                onClick={handleNoteSubmit}
+                color="secondary"
+              >
+                Enter
+              </Button> */}
+            </Box>
+            {/* {noteData[videoId] && (
+              <Box>
+                <Typography>{noteData[videoId]}</Typography>
+              </Box>
+            )} */}
           </TabPanel>
         </Grid>
       </Grid>
@@ -122,7 +163,6 @@ const TabPanel = ({ index, children, value, ...other }) => {
   return (
     <div
       role="tabpanel"
-      hideen={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-panel-id-${index}`}
     >
