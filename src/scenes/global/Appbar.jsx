@@ -2,18 +2,10 @@
 
 import { useContext, useState } from "react";
 import { Link as RouteLink } from "react-router-dom";
-import {
-  Box,
-  Button,
-  IconButton,
-  Link,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, Link, Typography, useTheme } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import { ColorModeContext, tokens } from "../../theme";
-import PlaylistForm from "../../components/playlistForm";
 
 const Appbar = () => {
   const [open, setOpen] = useState(false);
@@ -57,22 +49,21 @@ const Appbar = () => {
           </Link>
         </Box>
         {/*  */}
-        <Box display="flex" gap="20px">
-          {/* Add a new playlist button with popup modal */}
-          {/* <Button
-            variant="filled"
-            onClick={handleOpen}
-            sx={{
-              backgroundColor: colors.blueAccent[500],
-              color: " #fff",
-              padding: "5px 20px !important",
-              "&:hover": {
-                backgroundColor: colors.blueAccent[600],
-              },
-            }}
+        <Box display="flex" alignItems="center" gap="20px">
+          <Link
+            to="/recent"
+            component={RouteLink}
+            sx={{ textDecoration: "none" }}
           >
-            Add New
-          </Button> */}
+            <Typography color="secondary">Recent</Typography>
+          </Link>
+          <Link
+            to="/favorite"
+            component={RouteLink}
+            sx={{ textDecoration: "none" }}
+          >
+            <Typography color="secondary">Favorite</Typography>
+          </Link>
           <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlinedIcon />

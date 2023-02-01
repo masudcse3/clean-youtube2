@@ -16,6 +16,18 @@ const AddANewPlaylistInputForm = () => {
     getData(playlistId);
     setPlaylistId("");
   };
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    const url = "https://";
+    if (!value.startsWith(url)) {
+      setPlaylistId(value);
+    } else {
+      const params = new URL(value).searchParams;
+      const id = params.get("list");
+      setPlaylistId(id);
+    }
+  };
   return (
     <Box
       display="flex"
@@ -32,7 +44,7 @@ const AddANewPlaylistInputForm = () => {
         placeholder="enter a youtube playlist id or link"
         sx={{}}
         value={playlistId}
-        onChange={(e) => setPlaylistId(e.target.value)}
+        onChange={handleChange}
       />
       <Button
         type="submit"

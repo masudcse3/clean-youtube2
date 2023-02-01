@@ -9,6 +9,8 @@ import Appbar from "./scenes/global/Appbar";
 import Home from "./scenes/Home";
 import SinglePlaylistItem from "./scenes/singlePlaylistItem";
 import EasyTodo from "./scenes/EasyTodo";
+import Favorite from "./scenes/favorite";
+import RecentPlaylists from "./scenes/recent";
 
 const NotFound = () => {
   return <h2>404 Not Found</h2>;
@@ -25,6 +27,8 @@ function App() {
         <Box p="20px">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/favorite" element={<Favorite />} />
+            <Route path="/recent" element={<RecentPlaylists />} />
             <Route
               path="/playlist/:playlistId"
               element={<SinglePlaylistItem />}

@@ -16,11 +16,7 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import YouTube from "react-youtube";
 import AllItems from "../../components/playlistItems";
 import { tokens } from "../../theme";
-const playerOppts = {
-  playerVars: {
-    autoplay: 1,
-  },
-};
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SinglePlaylistItem = () => {
   const theme = useTheme();
@@ -30,11 +26,11 @@ const SinglePlaylistItem = () => {
   const [note, setNote] = useState("");
   const { data } = useStoreState((state) => state.playlists);
   const { data: noteData } = useStoreState((state) => state.notes);
-  const { newNotes, allNotes } = useStoreActions((action) => action.notes);
+  const { newNotes } = useStoreActions((action) => action.notes);
   const { playlistId } = useParams();
 
   const { playlistTitle, channelTitle, items } = data[playlistId];
-
+  const isNonMobile = useMediaQuery("(min-width: 600px)");
   const allProps = (index) => {
     return {
       id: `simple-panel-id-${index}`,
@@ -57,11 +53,17 @@ const SinglePlaylistItem = () => {
       notes: value,
     });
   };
-
+  const playerOppts = {
+    width: isNonMobile ? "790" : "720",
+    height: isNonMobile ? "520" : "560",
+    playerVars: {
+      autoplay: 1,
+    },
+  };
   const videoId = items[videoIndex].contentDetails.videoId;
 
   return (
-    <Box sx={{ flexGrow: 1 }} p="10px 10%">
+    <Box p={isNonMobile ? "20px 50px" : "10px"}>
       <Grid container spacing={2}>
         <Grid item md={8} sm={12}>
           <YouTube videoId={videoId} id={videoId} opts={playerOppts} />
@@ -73,12 +75,12 @@ const SinglePlaylistItem = () => {
           sx={{
             border: `1px solid ${colors.primary[400]}`,
             borderRadius: "4px",
-            height: "55vh",
+            height: "78vh",
             overflowY: "scroll",
             "&:scroll": {},
           }}
         >
-          <Box>
+          <Box position="sticky" top="10px" bottom="10px">
             <Typography fontWeight="bold" mb="10px" variant="h6">
               {playlistTitle}
             </Typography>
@@ -140,19 +142,7 @@ const SinglePlaylistItem = () => {
                 color="secondary"
                 value={noteData[videoId] ? noteData[videoId] : ""}
               />
-              {/* <Button
-                type="submit"
-                onClick={handleNoteSubmit}
-                color="secondary"
-              >
-                Enter
-              </Button> */}
             </Box>
-            {/* {noteData[videoId] && (
-              <Box>
-                <Typography>{noteData[videoId]}</Typography>
-              </Box>
-            )} */}
           </TabPanel>
         </Grid>
       </Grid>

@@ -7,10 +7,10 @@ import playlistModel from "./playlistModel";
 import recentPlaylistModel from "./recentPlaylistModel";
 
 const store = createStore({
-  playlists: persist(playlistModel),
-  recent: persist(recentPlaylistModel),
-  favorite: persist(favoriteModel),
-  notes: persist(noteModel),
+  playlists: persist(playlistModel, { storage: localStorage }),
+  recent: persist(recentPlaylistModel, { storage: localStorage }),
+  favorite: persist(favoriteModel, { storage: localStorage }),
+  notes: persist(noteModel, { storage: localStorage }),
 });
 
 export default store;

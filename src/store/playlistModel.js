@@ -33,6 +33,9 @@ const playlistModel = {
       }
     }
   ),
+  deletePlaylist: action((state, payload) => {
+    delete state.data[payload];
+  }),
 };
 
 export default playlistModel;
