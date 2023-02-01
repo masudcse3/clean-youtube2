@@ -57,8 +57,8 @@ const SinglePlaylistItem = () => {
     });
   };
   const playerOppts = {
-    width: isNonMobile ? "790" : "640",
-    height: isNonMobile ? "520" : "360",
+    width: isNonMobile ? "1150" : "640",
+    height: isNonMobile ? "650" : "360",
     playerVars: {
       autoplay: 1,
     },
@@ -74,7 +74,7 @@ const SinglePlaylistItem = () => {
           item
           md={4}
           sm={12}
-          height="78vh"
+          height="72vh"
           sx={{
             border: `1px solid ${colors.primary[400]}`,
             borderRadius: "4px",

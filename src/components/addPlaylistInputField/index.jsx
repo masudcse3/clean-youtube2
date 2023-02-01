@@ -41,7 +41,7 @@ const AddANewPlaylistInputForm = () => {
       <TextField
         fullWidth
         type="text"
-        label="Playlist Id"
+        label="playlist Id or link"
         color="secondary"
         placeholder="enter a youtube playlist id or link"
         sx={{}}
