@@ -5,6 +5,7 @@ import { Link as RouteLink } from "react-router-dom";
 import { Box, IconButton, Link, Typography, useTheme } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import { ColorModeContext, tokens } from "../../theme";
 
 const Appbar = () => {
@@ -19,7 +20,7 @@ const Appbar = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   return (
-    <Box>
+    <Box position="sticky" top="0" sx={{ zIndex: 2 }}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -33,8 +34,14 @@ const Appbar = () => {
             component={RouteLink}
             sx={{
               textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
+            <IconButton color="secondary">
+              <CleaningServicesIcon />
+            </IconButton>
             <Typography
               variant="h4"
               color={colors.blueAccent[400]}

@@ -4,7 +4,7 @@ import { Box, Grid, Divider, Typography } from "@mui/material";
 
 const AllItems = ({ thumbnail, title, onClick }) => {
   return (
-    <React.Fragment>
+    <Box p="0px 10px 5px 10px">
       <Grid
         container
         alignItems="center"
@@ -14,12 +14,12 @@ const AllItems = ({ thumbnail, title, onClick }) => {
         <Grid item sm={4}>
           <img src={thumbnail} alt={title} width="100%" />
         </Grid>
-        <Grid item sm={8} p="0 0 0 5px">
+        <Grid item sm={8} p="0 0 0 10px">
           <Typography>{title}</Typography>
         </Grid>
       </Grid>
-      <Divider variant="inset" component="div" />
-    </React.Fragment>
+      <Divider />
+    </Box>
   );
 };
 

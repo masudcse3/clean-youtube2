@@ -9,6 +9,7 @@ import {
   Tabs,
   Tab,
   TextField,
+  Divider,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -23,7 +24,7 @@ const SinglePlaylistItem = () => {
   const colors = tokens(theme.palette.mode);
   const [videoIndex, setVideoIndex] = useState(0);
   const [value, setValue] = useState(0);
-  const [note, setNote] = useState("");
+
   const { data } = useStoreState((state) => state.playlists);
   const { data: noteData } = useStoreState((state) => state.notes);
   const { newNotes } = useStoreActions((action) => action.notes);
@@ -31,6 +32,8 @@ const SinglePlaylistItem = () => {
 
   const { playlistTitle, channelTitle, items } = data[playlistId];
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+
+  const videoId = items[videoIndex].contentDetails.videoId;
   const allProps = (index) => {
     return {
       id: `simple-panel-id-${index}`,
@@ -54,17 +57,16 @@ const SinglePlaylistItem = () => {
     });
   };
   const playerOppts = {
-    width: isNonMobile ? "790" : "720",
-    height: isNonMobile ? "520" : "560",
+    width: isNonMobile ? "790" : "640",
+    height: isNonMobile ? "520" : "360",
     playerVars: {
       autoplay: 1,
     },
   };
-  const videoId = items[videoIndex].contentDetails.videoId;
 
   return (
-    <Box p={isNonMobile ? "20px 50px" : "10px"}>
-      <Grid container spacing={2}>
+    <Box p={isNonMobile ? "20px 50px" : "8px"}>
+      <Grid container>
         <Grid item md={8} sm={12}>
           <YouTube videoId={videoId} id={videoId} opts={playerOppts} />
         </Grid>
@@ -72,21 +74,28 @@ const SinglePlaylistItem = () => {
           item
           md={4}
           sm={12}
+          height="78vh"
           sx={{
             border: `1px solid ${colors.primary[400]}`,
             borderRadius: "4px",
-            height: "78vh",
             overflowY: "scroll",
-            "&:scroll": {},
           }}
         >
-          <Box position="sticky" top="10px" bottom="10px">
-            <Typography fontWeight="bold" mb="10px" variant="h6">
+          <Box
+            height="100px"
+            p="20px 0px"
+            position="sticky"
+            top="0px"
+            sx={{ background: colors.primary[500], zIndex: 1 }}
+          >
+            <Typography fontWeight="bold" mb="10px" variant="h6" p="0 10px">
               {playlistTitle}
             </Typography>
-            <Typography component="span">
+            <Typography component="span" p="10px">
               By {channelTitle} - {videoIndex + 1}/{items.length}
             </Typography>
+            <Box height="15px"></Box>
+            <Divider />
           </Box>
 
           {items.map((item, index) => (

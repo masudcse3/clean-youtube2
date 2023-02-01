@@ -1,7 +1,7 @@
 /** @format */
 
 import { Box, TextField, Button, useTheme } from "@mui/material";
-
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useStoreActions } from "easy-peasy";
 import { useState } from "react";
 
@@ -9,6 +9,8 @@ import { tokens } from "../../theme";
 const AddANewPlaylistInputForm = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const isNonMobile = useMediaQuery("(min-width: 600px)");
 
   const [playlistId, setPlaylistId] = useState("");
   const { getData } = useStoreActions((action) => action.playlists);
@@ -33,7 +35,7 @@ const AddANewPlaylistInputForm = () => {
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      p="10px 20%"
+      p={isNonMobile ? "20px 20%" : "10px 0 20px 0"}
       gap="20px"
     >
       <TextField
