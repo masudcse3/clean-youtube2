@@ -22,7 +22,11 @@ const SinglePlaylist = () => {
 
   return playlistsArr.length > 0 ? (
     playlistsArr.map((playlist) => (
-      <PlaylistCard playlist={playlist} key={playlist.playlistId} />
+      <PlaylistCard
+        playlist={playlist}
+        key={playlist.playlistId}
+        deleteItem={true}
+      />
     ))
   ) : (
     <NothingFound title="Playlist is Empty. Please add a new One" />

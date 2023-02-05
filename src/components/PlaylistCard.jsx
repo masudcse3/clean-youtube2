@@ -20,7 +20,7 @@ import { tokens } from "../theme";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
-const PlaylistCard = ({ playlist }) => {
+const PlaylistCard = ({ playlist, deleteItem }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [favorite, setFavorite] = useState("false");
@@ -134,16 +134,18 @@ const PlaylistCard = ({ playlist }) => {
                 </IconButton>
               </Tooltip>
             </Box>
-            <Box>
-              <Tooltip title="Delete" arrow>
-                <IconButton
-                  onClick={() => handleDelete(playlist.playlistId)}
-                  color="secondary"
-                >
-                  <DeleteOutlineIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            {deleteItem && (
+              <Box>
+                <Tooltip title="Delete" arrow>
+                  <IconButton
+                    onClick={() => handleDelete(playlist.playlistId)}
+                    color="secondary"
+                  >
+                    <DeleteOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>

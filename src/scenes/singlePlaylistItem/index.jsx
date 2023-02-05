@@ -10,20 +10,29 @@ import {
   Tab,
   TextField,
   Divider,
+  Drawer,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import YouTube from "react-youtube";
-import AllItems from "../../components/playlistItems";
-import { tokens } from "../../theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
+import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import { tokens } from "../../theme";
+import AllItems from "../../components/playlistItems";
 
 const SinglePlaylistItem = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [videoIndex, setVideoIndex] = useState(0);
-  const [value, setValue] = useState(0);
+
+  const [open, setOpen] = useState(false);
+  const [Descriptionopen, setDescriptionopen] = useState(false);
+  const [noteOpen, setNoteOpen] = useState(false);
 
   const { data } = useStoreState((state) => state.playlists);
   const { data: noteData } = useStoreState((state) => state.notes);
@@ -34,15 +43,10 @@ const SinglePlaylistItem = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
 
   const videoId = items[videoIndex].contentDetails.videoId;
-  const allProps = (index) => {
-    return {
-      id: `simple-panel-id-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  };
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  let videoWidth;
+  let videoHeight = window.innerHeight;
+  videoHeight = parseInt(videoHeight - 100);
+  videoWidth = parseInt((videoHeight * 16) / 9);
   const noteHandleChange = (e) => {
     newNotes({
       id: videoId,
@@ -56,33 +60,66 @@ const SinglePlaylistItem = () => {
       notes: value,
     });
   };
+
+  const handleVideoIndex = (index) => {
+    setVideoIndex(index);
+  };
   const playerOppts = {
-    width: isNonMobile ? "1150" : "640",
-    height: isNonMobile ? "650" : "360",
+    width: `${isNonMobile ? videoWidth : "360"}`,
+    height: `${isNonMobile ? videoHeight : "202"}`,
     playerVars: {
       autoplay: 1,
     },
   };
 
   return (
-    <Box p={isNonMobile ? "20px 50px" : "8px"}>
-      <Grid container>
-        <Grid item md={8} sm={12}>
-          <YouTube videoId={videoId} id={videoId} opts={playerOppts} />
-        </Grid>
-        <Grid
-          item
-          md={4}
-          sm={12}
-          height="72vh"
+    <Box>
+      <Box>
+        <Tooltip title="All Videos">
+          <IconButton onClick={() => setOpen(!open)} color="secondary">
+            <PlaylistPlayOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title="Description">
+          <IconButton
+            onClick={() => setDescriptionopen(!Descriptionopen)}
+            color="secondary"
+          >
+            <DescriptionOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Notes">
+          <IconButton onClick={() => setNoteOpen(!noteOpen)} color="secondary">
+            <RateReviewOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        mt={isNonMobile ? "-40px" : "20px"}
+      >
+        <YouTube videoId={videoId} id={videoId} opts={playerOppts} />
+      </Box>
+
+      {/*  Playlist Drawer */}
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={() => setOpen(!open)}
+        sx={{
+          "& .MuiPaper-root.MuiDrawer-paper": {
+            background: colors.primary[400],
+          },
+        }}
+      >
+        <Box
           sx={{
-            border: `1px solid ${colors.primary[400]}`,
-            borderRadius: "4px",
-            overflowY: "scroll",
+            width: isNonMobile ? "450px" : "250px",
           }}
         >
           <Box
-            height="100px"
             p="20px 0px"
             position="sticky"
             top="0px"
@@ -94,79 +131,83 @@ const SinglePlaylistItem = () => {
             <Typography component="span" p="10px">
               By {channelTitle} - {videoIndex + 1}/{items.length}
             </Typography>
-            <Box height="15px"></Box>
-            <Divider />
           </Box>
 
-          {items.map((item, index) => (
-            <AllItems
-              key={item?.contentDetails?.videoId}
-              title={item?.title}
-              thumbnail={item?.thumbnail?.url}
-              onClick={() => setVideoIndex(index)}
-            />
-          ))}
-        </Grid>
-      </Grid>
-      <Grid container spacing={2} mt="20px">
-        <Grid
-          item
-          sm={12}
+          <Box p="10px 0">
+            {items.map((item, index) => (
+              <AllItems
+                key={item?.contentDetails?.videoId}
+                title={item?.title}
+                thumbnail={item?.thumbnail?.url}
+                onClick={() => handleVideoIndex(index)}
+              />
+            ))}
+          </Box>
+        </Box>
+      </Drawer>
+      {/* Description Drawer  */}
+      <Drawer
+        anchor="right"
+        open={Descriptionopen}
+        onClose={() => setDescriptionopen(!Descriptionopen)}
+        sx={{
+          ".MuiPaper-root.MuiDrawer-paper": {
+            background: colors.primary[400],
+          },
+        }}
+      >
+        <Box
           sx={{
-            border: `1px solid ${colors.primary[400]}`,
-            borderRadius: "4px",
+            width: isNonMobile ? "500px" : "300px",
+            background: colors.primary[400],
             padding: "20px",
           }}
         >
-          <Typography variant="h4" fontWeight="bold">
+          <Typography variant="h4" fontWeight="bold" p="0 0 10px 0">
             {items[videoIndex].title}
           </Typography>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            indicatorColor="secondary"
-            textColor="secondary"
-          >
-            <Tab label="Description" {...allProps(0)} />
-            <Tab label="Note" {...allProps(1)} />
-          </Tabs>
-          <TabPanel index={0} value={value}>
-            <Typography>{items[videoIndex].description}</Typography>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Typography>Take Important Notes</Typography>
-            <Box display="flex" gap="5px" p="10px 0">
-              <TextField
-                fullWidth
-                name="note"
-                label="Note"
-                onChange={noteHandleChange}
-                onBlur={() =>
-                  handleBlur(noteData[videoId] ? noteData[videoId] : "")
-                }
-                type="text"
-                multiline
-                rows={10}
-                color="secondary"
-                value={noteData[videoId] ? noteData[videoId] : ""}
-              />
-            </Box>
-          </TabPanel>
-        </Grid>
-      </Grid>
+          <Divider />
+          <Typography p="10px 0 0 0 ">
+            {items[videoIndex].description}
+          </Typography>
+        </Box>
+      </Drawer>
+      {/* Note Drawer  */}
+      <Drawer
+        anchor="right"
+        open={noteOpen}
+        onClose={() => setNoteOpen(!noteOpen)}
+        sx={{
+          ".MuiPaper-root.MuiDrawer-paper": {
+            background: colors.primary[400],
+          },
+        }}
+      >
+        <Box
+          sx={{
+            width: isNonMobile ? "500px" : "300px",
+            background: colors.primary[400],
+            padding: "20px",
+          }}
+        >
+          <TextField
+            fullWidth
+            name="note"
+            color="secondary"
+            label="Note"
+            type="text"
+            multiline
+            rows="31"
+            onChange={noteHandleChange}
+            onBlur={() =>
+              handleBlur(noteData[videoId] ? noteData[videoId] : "")
+            }
+            value={noteData[videoId] ? noteData[videoId] : ""}
+          />
+        </Box>
+      </Drawer>
     </Box>
   );
 };
-const TabPanel = ({ index, children, value, ...other }) => {
-  return (
-    <div
-      role="tabpanel"
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-panel-id-${index}`}
-    >
-      {value === index && <Box sx={{ pt: "20px" }}>{children}</Box>}
-    </div>
-  );
-};
+
 export default SinglePlaylistItem;

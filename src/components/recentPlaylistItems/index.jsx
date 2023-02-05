@@ -12,7 +12,11 @@ const RecentPlaylistItems = () => {
 
   return recentPlaylistIds.length > 0 ? (
     recentPlaylistIds.map((playlist) => (
-      <PlaylistCard playlist={playlist} key={playlist.playlistId} />
+      <PlaylistCard
+        playlist={playlist}
+        key={playlist.playlistId}
+        deleteItem={false}
+      />
     ))
   ) : (
     <NothingFound title="No Recent Playlists" />
