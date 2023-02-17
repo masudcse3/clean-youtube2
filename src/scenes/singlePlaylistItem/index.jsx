@@ -22,6 +22,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { tokens } from "../../theme";
 import AllItems from "../../components/playlistItems";
 
@@ -102,7 +104,34 @@ const SinglePlaylistItem = () => {
       >
         <YouTube videoId={videoId} id={videoId} opts={playerOppts} />
       </Box>
-
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        mt={isNonMobile ? "-50px" : "20px"}
+      >
+        <Box display="flex" alignItems="center">
+          <IconButton
+            onClick={() => {
+              if (videoIndex > 0) {
+                setVideoIndex((prev) => prev - 1);
+              }
+            }}
+            color="secondary"
+          >
+            <ArrowBackIosNewIcon />
+          </IconButton>
+          <Typography color="secondary">PREV</Typography>
+        </Box>
+        <Box display="flex" alignItems="center">
+          <Typography color="secondary">NEXT</Typography>
+          <IconButton
+            onClick={() => setVideoIndex((prev) => prev + 1)}
+            color="secondary"
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </Box>
+      </Box>
       {/*  Playlist Drawer */}
       <Drawer
         anchor="right"

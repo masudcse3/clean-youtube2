@@ -42,9 +42,11 @@ const PlaylistCard = ({ playlist, deleteItem }) => {
   );
 
   const handleDelete = (playlistId) => {
-    removeFromFavorite(playlistId);
-    removeFromRecent(playlistId);
-    deletePlaylist(playlistId);
+    if (confirm("Are you sure you want to delete?")) {
+      removeFromFavorite(playlistId);
+      removeFromRecent(playlistId);
+      deletePlaylist(playlistId);
+    }
   };
   const handleFavorite = (playlistId) => {
     if (!favorite) {
